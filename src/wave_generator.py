@@ -1,6 +1,13 @@
 import numpy as np
 
 class Wave:
+    """
+    Oscillator class which is only responsible for generating raw periodic waveforms.
+
+    This class intentionally does not handle musical concepts such as notes,
+    envelopes, or mixing but only handles the foundational waveform, which are
+    either derived from sine (harmonic) or phase (geometric) definitions.
+    """
     def __init__(self, freq, amp, duration, sample_rate=44100):
         self.freq = freq
         self.amp = amp
