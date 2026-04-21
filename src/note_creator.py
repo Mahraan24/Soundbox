@@ -19,7 +19,7 @@ class Note:
         if max_val > 0:
             samples /= max_val
 
-        adsr = ADSR(self.duration, 0.02,0.05,0.7,0.2)
+        adsr = ADSR(self.duration, 0.05,0.2,0.0,0.2)
         env = adsr.envelope()
 
         samples = samples[:len(env)] * env
