@@ -4,16 +4,12 @@ from note_creator import *
 import numpy as np
 
 SAMPLE = 44100
-wave = waves.Wave(440,0.5,5, SAMPLE)
 
-# l= wave.sine()
+a = Note(440, 0.5, 1.0, SAMPLE).build(Wave.sine, "piano", 3)
+c = Note(523, 0.5, 1.0, SAMPLE).build(Wave.sine, "piano", 3)
+e = Note(659, 0.5, 1.0, SAMPLE).build(Wave.sine, "piano", 3)
 
+piece = np.concatenate([a, c, e])
 
-note = Note(440,0.5,5, SAMPLE)
-d = note.build(Wave.sine,3)
-
-# sd.play(l,SAMPLE)
-# sd.wait()
-
-sd.play(d,SAMPLE)
+sd.play(piece, SAMPLE)
 sd.wait()
