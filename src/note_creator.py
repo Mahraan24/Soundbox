@@ -1,6 +1,6 @@
 import numpy as np
-from ADSR import ADSR
-from envelope_store import EnvelopeStore, ADSRParams
+from filter import Filter
+from instrument_store import InstrumentStore
 from wave_generator import Wave
 
 class Note:
@@ -16,28 +16,23 @@ class Note:
         self.sample_rate = sample_rate
         self.duration = duration
 
-    def build(self, wave_type=Wave.sine, instrument="piano", harmonic=3) -> np.ndarray:
-        samples = np.zeros(int(self.sample_rate*self.duration))
-        for n in range(1,harmonic + 1):
+    def build(self, instrument="piano") -> np.ndarray:
+        preset = InstrumentStore.get(instrument)
+
+        samples = np.zeros(int(self.sample_rate * self.duration))
+        for n in range(1, preset.harmonic + 1):
             wave = Wave(self.freq * n, self.amp, self.duration, self.sample_rate)
-            samples += wave_type(wave) * (1/n)
-
-        if instrument is None:
-            adsr = ADSR(self.duration, 0.05, 0.20, 0.60, 0.20, self.sample_rate)
-        elif isinstance(instrument, str):
-            adsr = EnvelopeStore.get(instrument).to_adsr(self.duration, self.sample_rate)
-        elif isinstance(instrument, ADSRParams):
-            adsr = instrument.to_adsr(self.duration, self.sample_rate)
-        else:
-            raise TypeError(f"instrument must be str or ADSRParams, got {type(instrument)}")
-
-        env = adsr.envelope()
+            samples += preset.wave_type(wave) * (1/n)
 
         max_val = np.max(np.abs(samples))
         if max_val > 0:
             samples = samples / max_val
 
+        samples = Filter(preset.filter_a).low_pass(samples)
+
+        env = preset.to_adsr(self.duration, self.sample_rate).envelope()
         samples = samples[:len(env)] * env
+
         return samples.astype(np.float32)
 
 
