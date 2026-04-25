@@ -12,7 +12,6 @@ HARMONIC_DEFAULTS: dict[str, int] = {
     "triangle": 6,   # odd harmonics, falls off as 1/n², converges faster
 }
 
-
 class Note:
     def __init__(
         self,
@@ -27,10 +26,10 @@ class Note:
         self.duration = duration
 
     def build(
-            self,
-            wave_type=None,
-            harmonics: int | None = None,
-            instrument: str | ADSRParams | None = None,
+        self,
+        wave_type=None,
+        harmonics: int | None = None,
+        instrument: str | ADSRParams | None = None,
     ) -> np.ndarray:
         if wave_type is None:
             wave_type = Wave.sine
@@ -61,7 +60,6 @@ class Note:
         samples = samples[:len(env)] * env
 
         return samples.astype(np.float32)
-
 
 
 

@@ -11,12 +11,6 @@ class ADSRParams:
     def to_adsr(self, duration: float, sample_rate: int = 44100) -> ADSR:
         return ADSR(duration, self.attack, self.decay, self.sustain, self.release, sample_rate)
 
-
-
-
-
-
-
 class EnvelopeStore:
 
     PRESETS: dict[str, ADSRParams] = {
@@ -37,36 +31,3 @@ class EnvelopeStore:
             available = list(cls.PRESETS.keys())
             raise ValueError(f"Unknown instrument '{instrument}'. Available: {available}")
         return cls.PRESETS[key]
-
-    @staticmethod
-    def piano():
-        pass
-
-    @staticmethod
-    def acoustic_guitar():
-        pass
-
-    @staticmethod
-    def bass_guitar():
-        pass
-
-    @staticmethod
-    def electric_guitar():
-        pass
-
-    @staticmethod
-    def guitar_synth():
-        pass
-
-    @staticmethod
-    def violin():
-        pass
-
-    @staticmethod
-    def flute():
-        pass
-
-    @staticmethod
-    def whistle():
-        pass
-
