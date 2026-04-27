@@ -28,6 +28,11 @@ class Note:
         if max_val > 0:
             samples = samples / max_val
 
+        #vibrato
+        t = np.linspace(0, self.duration, int(self.sample_rate * self.duration))
+        vibrato = 1 + (0.005 * np.sin(2 * np.pi * 5 * t))  # 5Hz wobble
+        samples *= vibrato
+
         samples = Filter(preset.filter_a).low_pass(samples)
 
         env = preset.to_adsr(self.duration, self.sample_rate).envelope()
